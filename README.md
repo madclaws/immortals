@@ -1,21 +1,3 @@
 # Immortals
 
-**TODO: Add description**
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `immortals` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:immortals, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/immortals](https://hexdocs.pm/immortals).
-
+**A demo on OTP app deployment on k8 using Distributed Elixir**
