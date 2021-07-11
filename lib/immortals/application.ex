@@ -12,9 +12,10 @@ defmodule Immortals.Application do
     children = [
       # Starts a worker by calling: Immortals.Worker.start_link(arg)
       # {Immortals.Worker, arg}
-      {Cluster.Supervisor, [topologies(), name: Immortals.LibclusterSupervisor]},
-      {Horde.Registry, keys: :unique, name: GodRegistry},
-      {Horde.DynamicSupervisor, name: GodSupervisor, strategy: :one_for_one}
+      {Cluster.Supervisor, [topologies(), [name: Immortals.LibclusterSupervisor]]},
+      {Horde.Registry, keys: :unique, name: Immortals.GodRegistry},
+      {Horde.DynamicSupervisor, name: Immortals.GodSupervisor, strategy: :one_for_one},
+      {Immortals.GodObserver, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

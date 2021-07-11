@@ -7,6 +7,7 @@ defmodule Immortals.Life do
   require Logger
 
   def start_link(opts) do
+    Logger.info(inspect(opts))
     GenServer.start_link(__MODULE__, opts, name: via_tuple(opts[:name]))
   end
 
@@ -34,6 +35,6 @@ defmodule Immortals.Life do
   end
 
   defp via_tuple(name) do
-    {:via, Registry, {GodRegistry, name}}
+    {:via, Horde.Registry, {Immortals.GodRegistry, name}}
   end
 end
