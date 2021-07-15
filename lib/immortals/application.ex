@@ -12,9 +12,11 @@ defmodule Immortals.Application do
     children = [
       # Starts a worker by calling: Immortals.Worker.start_link(arg)
       # {Immortals.Worker, arg}
+      {Immortals.StateHandoff, []},
       {Cluster.Supervisor, [topologies(), [name: Immortals.LibclusterSupervisor]]},
       {Horde.Registry, keys: :unique, name: Immortals.GodRegistry},
-      {Horde.DynamicSupervisor, name: Immortals.GodSupervisor, strategy: :one_for_one},
+      {Horde.DynamicSupervisor,
+       name: Immortals.GodSupervisor, strategy: :one_for_one, shutdown: 1000},
       {Immortals.GodObserver, []}
     ]
 

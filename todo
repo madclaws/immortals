@@ -1,0 +1,4 @@
+|> Bug
+    |> start alice
+    |> start Bob
+    |> shut Alice and restart Alice

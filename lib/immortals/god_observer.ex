@@ -21,6 +21,7 @@ defmodule Immortals.GodObserver do
     Logger.info("Node is up #{inspect(node)}")
     set_members(Immortals.GodSupervisor)
     set_members(Immortals.GodRegistry)
+    join_state_handoff()
     {:noreply, state}
   end
 
@@ -36,5 +37,10 @@ defmodule Immortals.GodObserver do
     [Node.self() | Node.list()]
     |> Enum.map(&{god_process, &1})
     |> then(&Horde.Cluster.set_members(god_process, &1))
+  end
+
+  defp join_state_handoff() do
+    Node.list()
+    |> Enum.map(&Immortals.StateHandoff.join/1)
   end
 end
