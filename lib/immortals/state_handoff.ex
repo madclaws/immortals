@@ -24,11 +24,13 @@ defmodule Immortals.StateHandoff do
   @impl true
   def init(_opts) do
     {:ok, crdt_pid} = DeltaCrdt.start_link(DeltaCrdt.AWLWWMap, sync_interval: 5)
+    Logger.warn("Statehandoff inited at #{inspect Node.self}")
     {:ok, crdt_pid}
   end
 
   @impl true
   def handle_call({:add_node, node_module}, _from, crdt_pid) do
+    Logger.warn(inspect node_module)
     other_crdt_pid = GenServer.call(node_module, {:ack_add_node, crdt_pid})
     DeltaCrdt.set_neighbours(crdt_pid, [other_crdt_pid])
     {:reply, :ok, crdt_pid}
@@ -44,15 +46,16 @@ defmodule Immortals.StateHandoff do
   @impl true
   def handle_call({:handleoff, name, age}, _from, crdt_pid) do
     DeltaCrdt.put(crdt_pid, name, age)
-    Logger.info("Added #{name} to purgatory")
+    DeltaCrdt.to_map(crdt_pid) |> IO.inspect()
+    Logger.info("Added #{name} #{age} to purgatory")
     {:reply, :ok, crdt_pid}
   end
 
   @impl true
   def handle_call({:get_age, name}, _from, crdt_pid) do
-    Logger.warn("Getting Age of #{name}")
-    age = DeltaCrdt.to_map(crdt_pid) |> Map.get(name, 0)
-    DeltaCrdt.delete(crdt_pid, name)
+    Logger.warn("Getting Age of #{name} #{inspect crdt_pid}")
+    age = DeltaCrdt.to_map(crdt_pid) |> tap(&IO.inspect/1) |> Map.get(name, 0)
+    # DeltaCrdt.delete(crdt_pid, name)
     {:reply, age, crdt_pid}
   end
 end

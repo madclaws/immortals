@@ -19,9 +19,7 @@ defmodule Immortals.GodObserver do
   @impl true
   def handle_info({:nodeup, node, _node_type}, state) do
     Logger.info("Node is up #{inspect(node)}")
-    set_members(Immortals.GodSupervisor)
-    set_members(Immortals.GodRegistry)
-    join_state_handoff()
+    Process.send_after(self(), :on_node_up, 1_000)
     {:noreply, state}
   end
 
@@ -30,6 +28,15 @@ defmodule Immortals.GodObserver do
     Logger.info("Node is down #{inspect(node)}")
     set_members(Immortals.GodSupervisor)
     set_members(Immortals.GodRegistry)
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info(:on_node_up, state) do
+    Logger.warn("ON NODE UP")
+    set_members(Immortals.GodSupervisor)
+    set_members(Immortals.GodRegistry)
+    join_state_handoff()
     {:noreply, state}
   end
 
