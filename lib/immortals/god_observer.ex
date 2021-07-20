@@ -18,6 +18,7 @@ defmodule Immortals.GodObserver do
 
   @impl true
   def handle_info({:nodeup, node, _node_type}, state) do
+    Process.sleep(1_000)
     Logger.info("Node is up #{inspect(node)}")
     Process.send_after(self(), :on_node_up, 1_000)
     {:noreply, state}

@@ -18,6 +18,7 @@ defmodule Immortals.Life do
 
   @impl true
   def init(opts) do
+    # Process.sleep(2_000)
     Logger.info("New life spawned to universe => #{opts[:name]}")
     Process.flag(:trap_exit, true)
     Process.send_after(self(), {:after_start, opts}, 1000)
@@ -30,8 +31,9 @@ defmodule Immortals.Life do
   end
 
   @impl true
-  def handle_info(:heartbeat, %{age: current_age} = state) do
+  def handle_info(:heartbeat, %{name: name, age: current_age} = state) do
     Process.send_after(self(), :heartbeat, 1_000)
+    Immortals.StateHandoff.handoff(name, current_age + 1)
     {:noreply, %{state | age: current_age + 1}}
   end
 

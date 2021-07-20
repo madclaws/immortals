@@ -38,7 +38,7 @@ defmodule Immortals.StateHandoff do
 
   @impl true
   def handle_call({:ack_add_node, other_crdt_pid}, _from, crdt_pid) do
-    Logger.warn("ACK request from inspect other node}")
+    Logger.warn("ACK request from inspect other node")
     DeltaCrdt.set_neighbours(crdt_pid, [other_crdt_pid])
     {:reply, crdt_pid, crdt_pid}
   end
@@ -46,16 +46,17 @@ defmodule Immortals.StateHandoff do
   @impl true
   def handle_call({:handleoff, name, age}, _from, crdt_pid) do
     DeltaCrdt.put(crdt_pid, name, age)
-    DeltaCrdt.to_map(crdt_pid) |> IO.inspect()
-    Logger.info("Added #{name} #{age} to purgatory")
+    # Logger.info("Added #{name} to purgatory")
+    # I have no idea, if we comment the next line, CRDT will not work.
+    # IO.inspect(DeltaCrdt.to_map(crdt_pid))
     {:reply, :ok, crdt_pid}
   end
 
   @impl true
   def handle_call({:get_age, name}, _from, crdt_pid) do
-    Logger.warn("Getting Age of #{name} #{inspect crdt_pid}")
-    age = DeltaCrdt.to_map(crdt_pid) |> tap(&IO.inspect/1) |> Map.get(name, 0)
-    # DeltaCrdt.delete(crdt_pid, name)
+    Logger.warn("Getting Age of #{name} #{inspect(DeltaCrdt.to_map(crdt_pid))}")
+    age = DeltaCrdt.to_map(crdt_pid) |> Map.get(name, 0)
+    DeltaCrdt.delete(crdt_pid, name)
     {:reply, age, crdt_pid}
   end
 end

@@ -16,7 +16,7 @@ defmodule Immortals.Application do
       {Cluster.Supervisor, [topologies(), [name: Immortals.LibclusterSupervisor]]},
       {Horde.Registry, keys: :unique, name: Immortals.GodRegistry},
       {Horde.DynamicSupervisor,
-       name: Immortals.GodSupervisor, strategy: :one_for_one, shutdown: 1000},
+       name: Immortals.GodSupervisor, strategy: :one_for_one, shutdown: 5_000},
       {Immortals.GodObserver, []}
     ]
 
