@@ -18,6 +18,7 @@ defmodule Immortals.GodObserver do
 
   @impl true
   def handle_info({:nodeup, node, _node_type}, state) do
+    Process.sleep(1_000)
     Logger.info("Node is up #{inspect(node)}")
     set_members(Immortals.GodSupervisor)
     set_members(Immortals.GodRegistry)
