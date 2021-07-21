@@ -1,4 +1,6 @@
-|> Bug
-    |> start alice
-    |> start Bob
-    |> shut Alice and restart Alice
+docker build --tag gamezop/immortals .
+docker run --name immortals --detach immortals:latest
+
+ valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP

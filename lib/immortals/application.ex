@@ -9,11 +9,12 @@ defmodule Immortals.Application do
   def start(_type, _args) do
     Logger.info("Let there be light")
 
+    topologies = Application.get_env(:libcluster, :topologies)
+
     children = [
       # Starts a worker by calling: Immortals.Worker.start_link(arg)
-      # {Immortals.Worker, arg}
       {Immortals.StateHandoff, []},
-      {Cluster.Supervisor, [topologies(), [name: Immortals.LibclusterSupervisor]]},
+      {Cluster.Supervisor, [topologies, [name: Immortals.LibclusterSupervisor]]},
       {Horde.Registry, keys: :unique, name: Immortals.GodRegistry},
       {Horde.DynamicSupervisor,
        name: Immortals.GodSupervisor, strategy: :one_for_one, shutdown: 5_000},
@@ -24,13 +25,5 @@ defmodule Immortals.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Immortals.Supervisor]
     Supervisor.start_link(children, opts)
-  end
-
-  defp topologies do
-    [
-      immortals: [
-        strategy: Cluster.Strategy.Gossip
-      ]
-    ]
   end
 end

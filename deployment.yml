@@ -1,0 +1,27 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: immortals
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: immortals
+  template:
+    metadata:
+      labels:
+        app: immortals
+    spec:
+      containers:
+        - name: immortals
+          # the same name and tag must be used when building the image
+          image: immortals:latest
+          # use Never so the image is grabbed locally, for demo purposes
+          imagePullPolicy: Never
+          env:
+            - name: HOSTNAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: RELEASE_COOKIE
+              value: "cookie"
