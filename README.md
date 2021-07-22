@@ -32,6 +32,10 @@ git clone https://github.com/madclaws/immortals
 
 cd immortals
 
+# building docker image of immortals OTP app
+docker build --tag immortals . 
+
+# creating a k8 deployment with immortals image
 kubectl create -f deployment.yml --validate=false
 ```  
 
