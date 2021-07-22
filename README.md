@@ -2,8 +2,11 @@
 
 **A demo on OTP stateful app deployment on k8 using Distributed Elixir**
 
+**We are going to make stateful processes, that survive pod crashes and continue to live with old memory. Being Immortals..**
+
 ## Overview
 ---
+
 - When a pod gets killed, its state is also destroyed
 - We can leverage erlang distribution to handle state-handoff during pod crashes.
 - Thus we can scale and deploy stateful apps in k8s.
