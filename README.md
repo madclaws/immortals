@@ -55,7 +55,7 @@ immortals-6fc5d7f687-x9dsw   1/1     Running   0          7s
 
 - Start a new life
 
-       # Each life is a Genserver (in-memory), holding age as its size 
+       # Each life is a Genserver (in-memory), holding age as its state 
        iex(immortals@172.17.0.5)1> Immortals.start_life "Adam"
        {:ok, #PID<0.974.0>}
 
@@ -86,7 +86,7 @@ immortals-6fc5d7f687-x9dsw   1/1     Running   0          7s
 
       kubectl delete pod immortals-6fc5d7f687-m7pc8  
 
-      # So basically Adam process will be terminated and state is also should have gone...
+      # So basically Adam process will be terminated and state also should have gone...
 
 - Check the logs of second (alive) pod
       
@@ -108,7 +108,7 @@ immortals-6fc5d7f687-x9dsw   1/1     Running   0          7s
 
 ### Call from the new world
 ---
-- As soon as one pod is deleted, k8 automatically starts a new one, so we again have a 2 pods.
+- As soon as one pod is deleted, k8 automatically starts a new one, so we again have 2 pods.
 - Get a shell to the new pod started by k8.
 - Connect to the new pod remotely.
 - Check Adam's age.
